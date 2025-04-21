@@ -446,3 +446,21 @@ WHERE NOT EXISTS (
   )
 );
 
+
+-- 1. Student Table with Age as a virtual/generated column (MySQL)
+CREATE TABLE Student (
+    Student_ID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    DOB DATE,
+    Age INT GENERATED ALWAYS AS (TIMESTAMPDIFF(YEAR, DOB, CURDATE())) STORED,
+    Gender VARCHAR(10)
+);
+
+-- 2. Agar table already ban chuka hai, toh ALTER karke column add karna:
+ALTER TABLE Student 
+ADD COLUMN Age INT GENERATED ALWAYS AS (TIMESTAMPDIFF(YEAR, DOB, CURDATE())) STORED;
+
+-- 3. Agar tumhe ek baar age dekhni ho bina column add kiye:
+SELECT Student_ID, Name, DOB, 
+       TIMESTAMPDIFF(YEAR, DOB, CURDATE()) AS Age
+FROM Student;
